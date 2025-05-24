@@ -1,0 +1,93 @@
+/* Main window background */
+QMainWindow {
+    background-color: #333333;
+}
+
+/* Title label */
+#titleLabel {
+    font-size: 24px;
+    font-weight: bold;
+    color: #639eda;
+    padding: 10px;
+}
+
+/* Task input field */
+#taskInput {
+    background-color: #333333;
+    padding: 8px;
+    border: 1px solid #505050;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+#taskInput:focus {
+    border: 1px solid #3498db;
+}
+
+/* Buttons */
+QPushButton {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    color: white;
+    margin: 2px;
+}
+
+#addButton {
+    background-color: #2ecc71;
+}
+
+#addButton:hover {
+    background-color: #27ae60;
+}
+
+#deleteButton {
+    background-color: #e74c3c;
+}
+
+#deleteButton:hover {
+    background-color: #c0392b;
+}
+
+#clearButton {
+    background-color: #e67e22;
+}
+
+#clearButton:hover {
+    background-color: #d35400;
+}
+
+#completeButton {
+    background-color: #3498db;
+}
+
+#completeButton:hover {
+    background-color: #2980b9;
+}
+
+/* Task list */
+#taskList {
+    background-color: rgb(56, 56, 56);
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 14px;
+}
+
+#taskList::item {
+    padding: 8px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+#taskList::item:selected {
+    background-color: #3498db;
+    color: white;
+}
+
+/* Status label */
+#statusLabel {
+    color: #7f8c8d;
+    font-style: italic;
+    padding: 5px;
+}

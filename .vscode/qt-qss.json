@@ -1,0 +1,34 @@
+{
+    "version": 1.1,
+    "properties": [
+        {
+            "name": "qproperty-alignment",
+            "values": ["left", "right", "center", "justify"]
+        },
+        {
+            "name": "qproperty-iconSize",
+            "syntax": "<length>"
+        },
+        {
+            "name": "background",
+            "values": ["transparent", "url(:/images/icon.png)"]
+        },
+        {
+            "name": "border",
+            "values": ["1px solid ${colors}"]
+        },
+        {
+            "name": "subcontrol-origin",
+            "values": ["content", "padding", "border", "margin"]
+        }
+    ],
+    "pseudoClasses": [
+        ":hover", ":pressed", ":checked", ":disabled", ":focus"
+    ],
+    "atDirectives": [
+        {
+            "name": "qnamespace",
+            "description": "Qt widget namespace (e.g., 'QPushButton')"
+        }
+    ]
+}

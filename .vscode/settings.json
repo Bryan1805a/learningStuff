@@ -1,0 +1,15 @@
+{
+    // Treat .qss files as CSS for IntelliSense
+    "files.associations": {
+        "*.qss": "css"
+    },
+
+    // Enable Qt-specific suggestions
+    "css.customData": [
+        "./.vscode/qt-qss.json"  // Path to custom Qt QSS data (we'll create this next)
+    ],
+
+    // Optional: CSS validation rules (disable conflicts with QSS)
+    "css.lint.unknownProperties": "ignore",
+    "scss.lint.unknownProperties": "ignore"
+}
