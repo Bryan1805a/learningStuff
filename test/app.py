@@ -1,27 +1,28 @@
-import sys
-
-from PyQt6.QtWidgets import QApplication, QMainWindow, QTabWidget
-
-from layout_colourwidget import Color
-
+from PyQt6.QtCore import QSize, Qt
+from PyQt6.QtGui import QAction, QIcon, QKeySequence
+from PyQt6.QtWidgets import (
+    QApplication,
+    QCheckBox,
+    QLabel,
+    QMainWindow,
+    QStatusBar,
+    QToolBar,
+)
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-
         self.setWindowTitle("My App")
 
-        tabs = QTabWidget()
-        tabs.setTabPosition(QTabWidget.TabPosition.West)
-        tabs.setMovable(True)
+        label = QLabel("Hello!")
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        for color in ["red", "green", "blue", "yellow"]:
-            tabs.addTab(Color(color), color)
+        self.setCentralWidget(label)
 
-        self.setCentralWidget(tabs)
+        toolbar = QToolBar("My main toolbar")
+        self.addToolBar(toolbar)
 
-
-app = QApplication(sys.argv)
+app = QApplication([])
 window = MainWindow()
 window.show()
 app.exec()
