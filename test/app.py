@@ -1,6 +1,6 @@
 import sys
 
-from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
+from PyQt6.QtWidgets import QApplication, QMainWindow, QTabWidget
 
 from layout_colourwidget import Color
 
@@ -8,17 +8,17 @@ from layout_colourwidget import Color
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+
         self.setWindowTitle("My App")
 
-        layout = QVBoxLayout()
-        layout.addWidget(Color("red"))
-        layout.addWidget(Color("green"))
-        layout.addWidget(Color("orange"))
-        layout.addWidget(Color("blue"))
-        widget = QWidget()
-        widget.setLayout(layout)
+        tabs = QTabWidget()
+        tabs.setTabPosition(QTabWidget.TabPosition.West)
+        tabs.setMovable(True)
 
-        self.setCentralWidget(widget)
+        for color in ["red", "green", "blue", "yellow"]:
+            tabs.addTab(Color(color), color)
+
+        self.setCentralWidget(tabs)
 
 
 app = QApplication(sys.argv)
