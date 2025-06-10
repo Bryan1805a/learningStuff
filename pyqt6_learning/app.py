@@ -1,27 +1,28 @@
-import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel,
+                             QLineEdit, QVBoxLayout, QWidget)
 
+import sys
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-
         self.setWindowTitle("My app")
 
-        self.button = QPushButton("Press me!")
-        self.button.clicked.connect(self.the_button_was_clicked)
+        self.label = QLabel()
 
-        self.setCentralWidget(self.button)
+        self.input = QLineEdit()
+        self.input.textChanged.connect(self.label.setText)
 
-    def the_button_was_clicked(self):
-        self.button.setText("You already clicked me")
-        self.button.setEnabled(False)
+        layout = QVBoxLayout()
+        layout.addWidget(self.label)
+        layout.addWidget(self.input)
 
-        self.setWindowTitle("My one shot app")
+        container = QWidget()
+        container.setLayout(layout)
+
+        self.setCentralWidget(container)
 
 app = QApplication(sys.argv)
-
 window = MainWindow()
 window.show()
-
 app.exec()
