@@ -11,20 +11,32 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("My App")
 
-        widget = QComboBox()
-        widget.addItems(["One", "Two", "Three"])
-        widget.setEditable(False)
-        widget.setInsertPolicy(QComboBox.InsertPolicy.InsertAlphabetically)
-        widget.currentIndexChanged.connect(self.index_changed)
-        widget.currentTextChanged.connect(self.text_changed)
+        widget = QSlider(Qt.Orientation.Horizontal)
+
+        widget.setMinimum(-10)
+        widget.setMaximum(3)
+
+        widget.setSingleStep(30)
+
+        widget.valueChanged.connect(self.value_changed)
+        widget.sliderMoved.connect(self.slider_position)
+        widget.sliderPressed.connect(self.slider_pressed)
+        widget.sliderReleased.connect(self.slider_released)
 
         self.setCentralWidget(widget)
 
-    def index_changed(self, i):
+    def value_changed(self, i):
         print(i)
+
+    def slider_position(self, p):
+        print("Pos", p)
     
-    def text_changed(self, s):
-        print(s)
+    def slider_pressed(self):
+        print("Pressed!")
+    
+    def slider_released(self):
+        print("Released!")
+
         
 app = QApplication(sys.argv)
 window = MainWindow()
