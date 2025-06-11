@@ -1,33 +1,32 @@
 import sys
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QTextEdit
-
+from PyQt6.QtWidgets import (QApplication, QCheckBox, QComboBox,
+                             QDial, QDoubleSpinBox, QLabel,
+                             QLineEdit, QListWidget, QMainWindow,
+                             QSlider, QSpinBox)
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.setWindowTitle("My App")
 
-        self.setMouseTracking(True)
-        self.label = QLabel("Click in this window")
-        self.label.setMouseTracking(True)
-        self.setCentralWidget(self.label)
+        widget = QComboBox()
+        widget.addItems(["One", "Two", "Three"])
+        widget.setEditable(False)
+        widget.setInsertPolicy(QComboBox.InsertPolicy.InsertAlphabetically)
+        widget.currentIndexChanged.connect(self.index_changed)
+        widget.currentTextChanged.connect(self.text_changed)
 
-    def mousePressEvent(self, e):
-        if e.button() == Qt.MouseButton.LeftButton:
-            self.label.setText("mousePressEvent LEFT")
-        elif e.button() == Qt.MouseButton.MiddleButton:
-            self.label.setText("mousePressEvent MIDDLE")
-        elif e.button() == Qt.MouseButton.RightButton:
-            self.label.setText("mousePressEvent RIGHT")
+        self.setCentralWidget(widget)
+
+    def index_changed(self, i):
+        print(i)
     
-    def mouseDoubleClickEvent(self, e):
-        if e.button() == Qt.MouseButton.LeftButton:
-            self.label.setText("mouseDouble LEFT")
-
+    def text_changed(self, s):
+        print(s)
+        
 app = QApplication(sys.argv)
-
 window = MainWindow()
 window.show()
-
 app.exec()
