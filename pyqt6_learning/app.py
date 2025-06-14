@@ -1,33 +1,48 @@
 import sys
 from layout_colorwidget import Color
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget,
-                             QVBoxLayout, QHBoxLayout)
+from PyQt6.QtWidgets import (QApplication, QHBoxLayout, QMainWindow,
+                             QPushButton, QStackedLayout, QVBoxLayout,
+                             QWidget)
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("My App")
 
-        layout_1 = QHBoxLayout()
-        layout_2 = QVBoxLayout()
-        layout_3 = QVBoxLayout()
+        page_layout = QVBoxLayout()
+        button_layout = QHBoxLayout()
+        self.stack_layout = QStackedLayout()
 
-        layout_2.addWidget(Color("red"))
-        layout_2.addWidget(Color("yellow"))
-        layout_2.addWidget(Color("purple"))
+        page_layout.addLayout(button_layout)
+        page_layout.addLayout(self.stack_layout)
 
-        layout_1.addLayout(layout_2)
+        btn = QPushButton("red")
+        btn.pressed.connect(self.activate_tab_1)
+        button_layout.addWidget(btn)
+        self.stack_layout.addWidget(Color("red"))
 
-        layout_1.addWidget(Color("green"))
+        btn = QPushButton("green")
+        btn.pressed.connect(self.activate_tab_2)
+        button_layout.addWidget(btn)
+        self.stack_layout.addWidget(Color("green"))
 
-        layout_3.addWidget(Color("red"))
-        layout_3.addWidget(Color("purple"))
-
-        layout_1.addLayout(layout_3)
+        btn = QPushButton("Yellow")
+        btn.pressed.connect(self.activate_tab_3)
+        button_layout.addWidget(btn)
+        self.stack_layout.addWidget(Color("yellow"))
 
         widget = QWidget()
-        widget.setLayout(layout_1)
+        widget.setLayout(page_layout)
         self.setCentralWidget(widget)
+    
+    def activate_tab_1(self):
+        self.stack_layout.setCurrentIndex(0)
+    
+    def activate_tab_2(self):
+        self.stack_layout.setCurrentIndex(1)
+
+    def activate_tab_3(self):
+        self.stack_layout.setCurrentIndex(2)
 
 app = QApplication(sys.argv)
 window = MainWindow()
