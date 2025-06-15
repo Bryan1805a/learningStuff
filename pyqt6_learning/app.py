@@ -1,48 +1,51 @@
 import sys
-from layout_colorwidget import Color
-from PyQt6.QtWidgets import (QApplication, QHBoxLayout, QMainWindow,
-                             QPushButton, QStackedLayout, QVBoxLayout,
-                             QWidget)
+from PyQt6.QtCore import QSize, Qt
+from PyQt6.QtGui import QAction, QIcon, QKeySequence
+from PyQt6.QtWidgets import (QApplication, QCheckBox, QLabel,
+                             QMainWindow, QStatusBar, QToolBar)
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("My App")
 
-        page_layout = QVBoxLayout()
-        button_layout = QHBoxLayout()
-        self.stack_layout = QStackedLayout()
+        label = QLabel("Hello!")
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        page_layout.addLayout(button_layout)
-        page_layout.addLayout(self.stack_layout)
+        self.setCentralWidget(label)
 
-        btn = QPushButton("red")
-        btn.pressed.connect(self.activate_tab_1)
-        button_layout.addWidget(btn)
-        self.stack_layout.addWidget(Color("red"))
+        toolbar = QToolBar("My main toolbar")
+        toolbar.setIconSize(QSize(16, 16))
+        self.addToolBar(toolbar)
 
-        btn = QPushButton("green")
-        btn.pressed.connect(self.activate_tab_2)
-        button_layout.addWidget(btn)
-        self.stack_layout.addWidget(Color("green"))
+        button_action = QAction("Your button", self)
+        button_action.setStatusTip("This is your button")
+        button_action.triggered.connect(self.toolbar_button_clicked)
+        button_action.setCheckable(True)
+        toolbar.addAction(button_action)
 
-        btn = QPushButton("Yellow")
-        btn.pressed.connect(self.activate_tab_3)
-        button_layout.addWidget(btn)
-        self.stack_layout.addWidget(Color("yellow"))
+        toolbar.addSeparator()
 
-        widget = QWidget()
-        widget.setLayout(page_layout)
-        self.setCentralWidget(widget)
-    
-    def activate_tab_1(self):
-        self.stack_layout.setCurrentIndex(0)
-    
-    def activate_tab_2(self):
-        self.stack_layout.setCurrentIndex(1)
+        button_action_2 = QAction("Your button 2", self)
+        button_action_2.setStatusTip("This is your button 2")
+        button_action_2.triggered.connect(self.toolbar_button_clicked)
+        button_action_2.setCheckable(True)
+        toolbar.addAction(button_action_2)
 
-    def activate_tab_3(self):
-        self.stack_layout.setCurrentIndex(2)
+        toolbar.addWidget(QLabel("Hello"))
+        toolbar.addWidget(QCheckBox())
+
+        self.setStatusBar(QStatusBar(self))
+
+        menu = self.menuBar()
+
+        file_menu = menu.addMenu("&File")
+        file_menu.addAction(button_action)
+        file_menu.addSeparator()
+        file_menu.addAction(button_action_2)
+
+    def toolbar_button_clicked(self, s):
+        print("click", s)
 
 app = QApplication(sys.argv)
 window = MainWindow()
