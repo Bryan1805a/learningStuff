@@ -1,51 +1,43 @@
 import sys
-from PyQt6.QtCore import QSize, Qt
-from PyQt6.QtGui import QAction, QIcon, QKeySequence
-from PyQt6.QtWidgets import (QApplication, QCheckBox, QLabel,
-                             QMainWindow, QStatusBar, QToolBar)
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QPushButton,
+                             QDialog, QDialogButtonBox, QVBoxLayout,
+                             QLabel)
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("My App")
 
-        label = QLabel("Hello!")
-        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        button = QPushButton("Press me for a dialog")
+        button.clicked.connect(self.button_clicked)
+        self.setCentralWidget(button)
 
-        self.setCentralWidget(label)
-
-        toolbar = QToolBar("My main toolbar")
-        toolbar.setIconSize(QSize(16, 16))
-        self.addToolBar(toolbar)
-
-        button_action = QAction("Your button", self)
-        button_action.setStatusTip("This is your button")
-        button_action.triggered.connect(self.toolbar_button_clicked)
-        button_action.setCheckable(True)
-        toolbar.addAction(button_action)
-
-        toolbar.addSeparator()
-
-        button_action_2 = QAction("Your button 2", self)
-        button_action_2.setStatusTip("This is your button 2")
-        button_action_2.triggered.connect(self.toolbar_button_clicked)
-        button_action_2.setCheckable(True)
-        toolbar.addAction(button_action_2)
-
-        toolbar.addWidget(QLabel("Hello"))
-        toolbar.addWidget(QCheckBox())
-
-        self.setStatusBar(QStatusBar(self))
-
-        menu = self.menuBar()
-
-        file_menu = menu.addMenu("&File")
-        file_menu.addAction(button_action)
-        file_menu.addSeparator()
-        file_menu.addAction(button_action_2)
-
-    def toolbar_button_clicked(self, s):
+    def button_clicked(self, s):
         print("click", s)
+
+        dlg = CustomDialog()
+        if dlg.exec():
+            print("Sucess!")
+        else:
+            print("Cancel!")
+
+class CustomDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self.setWindowTitle("HELLO!")
+
+        QBtn = (QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+
+        self.button_box = QDialogButtonBox(QBtn)
+        self.button_box.accepted.connect(self.accept)
+        self.button_box.rejected.connect(self.reject)
+
+        layout = QVBoxLayout()
+        message = QLabel("Something happened, is that OK?")
+        layout.addWidget(message)
+        layout.addWidget(self.button_box)
+        self.setLayout(layout)
 
 app = QApplication(sys.argv)
 window = MainWindow()
