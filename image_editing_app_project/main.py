@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget,
                              QComboBox, QVBoxLayout, QHBoxLayout,
                              QFileDialog
 )
+from PIL import (Image, ImageFilter, ImageEnhance)
 import sys
 import os
 
@@ -13,6 +14,7 @@ class MainApp(QMainWindow):
         super().__init__()
         self.setWindowTitle("Image Editing App")
         self.resize(900, 700)
+        self.editor = Editor(self)
 
         # --- Widgets ---
         # Image display area
@@ -24,6 +26,7 @@ class MainApp(QMainWindow):
 
         # List of objects (images)
         self.file_list = QListWidget()
+        self.file_list.currentRowChanged.connect(self.display_image)
 
         # Function selection dropdown
         self.function_select_box = QComboBox()
@@ -84,9 +87,46 @@ class MainApp(QMainWindow):
         self.file_list.clear()
         for filename in filenames:
             self.file_list.addItem(filename)
-        
-        
+            
+    def display_image(self):
+        if self.file_list.currentRow() >= 0:
+            filename = self.file_list.currentItem().text()
+            self.editor.load_image(filename)
+            self.editor.show_image(os.path.join(self.work_dir, self.editor.filename))
 
+
+class Editor():
+    def __init__(self, main_app):
+        self.main_app = main_app
+        self.image = None
+        self.original_image = None
+        self.filename = None
+        self.save_folder = "edits/"
+        
+    def load_image(self, filename):
+        self.filename = filename
+        fullname = os.path.join(self.main_app.work_dir, self.filename)
+        self.image = Image.open(fullname)
+        self.original_image = self.image.copy()
+    
+    def save_image(self):
+        path = os.path.join(self.main_app.work_dir, self.save_folder)
+        if not(os.path.exists(path) or os.path.isdir(path)):
+            os.mkdir(path)
+        
+        fullname = os.path.join(path, self.filename)
+        self.image.save(fullname)
+        
+    def show_image(self, path):
+        self.main_app.image_zone.hide()
+        image = QPixmap(path)
+        width = self.main_app.image_zone.width()
+        height = self.main_app.image_zone.height()
+        image = image.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio)
+        self.main_app.image_zone.setPixmap(image)
+        self.main_app.image_zone.show()
+        
+        
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainApp()
