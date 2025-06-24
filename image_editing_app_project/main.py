@@ -37,12 +37,19 @@ class MainApp(QMainWindow):
 
         # Function buttons
         self.left_button = QPushButton("Left")
+        self.left_button.clicked.connect(self.editor.left)
         self.right_button = QPushButton("Right")
+        self.right_button.clicked.connect(self.editor.right)
         self.mirror_button = QPushButton("Mirror")
+        self.mirror_button.clicked.connect(self.editor.mirror)
         self.sharpness_button = QPushButton("Sharpness")
+        self.sharpness_button.clicked.connect(self.editor.sharpen)
         self.BW_button = QPushButton("B/W")
+        self.BW_button.clicked.connect(self.editor.gray)
         self.colour_button = QPushButton("Colour")
+        self.colour_button.clicked.connect(self.editor.enhance_colour)
         self.contrast_button = QPushButton("Contrast")
+        self.contrast_button.clicked.connect(self.editor.contrast)
 
         # --- Layouts ---
         # Sidebar with controls
@@ -125,7 +132,55 @@ class Editor():
         image = image.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio)
         self.main_app.image_zone.setPixmap(image)
         self.main_app.image_zone.show()
+    
+    def gray(self):
+        self.image = self.image.convert("L")
+        self.save_image()
+        image_path = os.path.join(self.main_app.work_dir, self.save_folder, self.filename)
+        self.show_image(image_path)
         
+    def left(self):
+        self.image = self.image.transpose(Image.ROTATE_90)
+        self.save_image()
+        image_path = os.path.join(self.main_app.work_dir, self.save_folder, self.filename)
+        self.show_image(image_path)
+    
+    def right(self):
+        self.image = self.image.transpose(Image.ROTATE_270)
+        self.save_image()
+        image_path = os.path.join(self.main_app.work_dir, self.save_folder, self.filename)
+        self.show_image(image_path)
+        
+    def mirror(self):
+        self.image = self.image.transpose(Image.FLIP_LEFT_RIGHT)
+        self.save_image()
+        image_path = os.path.join(self.main_app.work_dir, self.save_folder, self.filename)
+        self.show_image(image_path)
+    
+    def sharpen(self):
+        self.image = self.image.filter(ImageFilter.SHARPEN)
+        self.save_image()
+        image_path = os.path.join(self.main_app.work_dir, self.save_folder, self.filename)
+        self.show_image(image_path)
+        
+    def blur(self):
+        self.image = self.image.filter(ImageFilter.BLUR)
+        self.save_image()
+        image_path = os.path.join(self.main_app.work_dir, self.save_folder, self.filename)
+        self.show_image(image_path)
+    
+    def enhance_colour(self):
+        self.image = ImageEnhance.Color(self.image).enhance(1.2)
+        self.save_image()
+        image_path = os.path.join(self.main_app.work_dir, self.save_folder, self.filename)
+        self.show_image(image_path)
+    
+    def contrast(self):
+        self.image = ImageEnhance.Contrast(self.image).enhance(1.2)
+        self.save_image()
+        image_path = os.path.join(self.main_app.work_dir, self.save_folder, self.filename)
+        self.show_image(image_path)
+    
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)
