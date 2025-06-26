@@ -72,6 +72,10 @@ class MainApp(QMainWindow):
         self.setCentralWidget(container)
 
     # ---------------- Utility Methods ----------------
+    def handle_filter(self):
+        if self.file_list.currentRow >= 0:
+            select_filter = self.file_list.currentText()
+            self.editor.apply_filter(select_filter)
 
     def filter(self, files, extensions):
         res = []
@@ -180,6 +184,32 @@ class Editor:
         image_path = os.path.join(self.main_app.work_dir, self.save_folder, self.filename)
         self.show_image(image_path)
 
+    def apply_filter(self, filter_name):
+        if filter_name == "Original":
+            self.image = self.original.copy()
+        else:
+            mapping = {
+                "Left": lambda image: self.image.transform(Image.ROTATE_90),
+                "Right": lambda image: self.image.transform(Image.ROTATE_270),
+                "Mirror": lambda image: self.image.transpose(Image.FLIP_LEFT_RIGHT), 
+                "Sharpness": lambda image: self.image.filter(Image.SHARPEN), 
+                "B/W": lambda image: self.image.convert("L"),
+                "Colour": lambda image: ImageEnhance.Color(self.image).enhance(1.2),
+                "Contrast": lambda image: ImageEnhance.Contrast(self.image).enhance(1.2)
+            }
+            
+            filter_function = mapping.get(filter_name)
+            if filter_function:
+                self.image = filter_function(self.image)
+                self.save_image()
+                image_path = os.path.join(self.main_app.work_dir, self.save_folder, self.filename)
+                self.show_image(image_path)
+            pass
+        self.save_image()
+        image_path = os.path.join(self.main_app.work_dir, self.save_folder, self.filename)
+        self.show_image(image_path)
+        
+            
 
 # ---------------- Application Entry Point ----------------
 
