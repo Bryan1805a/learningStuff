@@ -31,7 +31,7 @@ def getThreeLargest(arr):
     return res
     
 
-class TestGetThreeLargest(unittest.TestCase):
+class Test(unittest.TestCase):
     def test_case_1(self):
         arr = [12, 13, 1, 10, 34, 1]
         expected = [34, 13, 12]
