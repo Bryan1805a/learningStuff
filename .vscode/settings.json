@@ -1,7 +1,8 @@
 {
     // Treat .qss files as CSS for IntelliSense
     "files.associations": {
-        "*.qss": "css"
+        "*.qss": "css",
+        "iostream": "cpp"
     },
 
     // Enable Qt-specific suggestions
