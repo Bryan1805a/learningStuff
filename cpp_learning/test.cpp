@@ -2,6 +2,9 @@
 using namespace std;
 
 int main() {
-    cout << "Hello World";
+    char a = 'a';
+    cout << int(a);
+    char b = 'B';
+    cout << int(b);
     return 0;
 }

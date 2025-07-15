@@ -12,5 +12,6 @@
 
     // Optional: CSS validation rules (disable conflicts with QSS)
     "css.lint.unknownProperties": "ignore",
-    "scss.lint.unknownProperties": "ignore"
+    "scss.lint.unknownProperties": "ignore",
+    "C_Cpp.default.compilerPath": "C:/AAG/Apps/msys64/ucrt64/bin/g++.exe"
 }
