@@ -2,19 +2,13 @@
 #include <string>
 using namespace std;
 
+void hello_world(string a) {
+    cout << "Hello" << " " << a << endl;
+};
+
 int main() {
-    int a = 10;
-    int* ptr = &a;
-
-    cout << a << endl;
-    cout << &a << endl;
-    cout << *ptr << endl;
-    cout << ptr << endl;
-
-    *ptr = 20;
-    cout << a << endl;
-    cout << &a << endl;
-    cout << *ptr << endl;
-    cout << ptr << endl;
+    string name;
+    getline (cin, name);
+    hello_world(name);
     return 0;
 }
