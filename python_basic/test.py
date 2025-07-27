@@ -1,6 +1,9 @@
 import sys
-from PySide6.QtWidgets import QLabel, QApplication
+from PySide6.QtWidgets import QMainWindow, QApplication, QLabel
+app = QApplication(sys.argv)
 
-class MyApp(QApplication):
-    def __init__(self):
-        super().__init__()
+a = QMainWindow()
+print(a.centralWidget())
+
+a.show()
+app.exec()
