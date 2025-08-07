@@ -4,7 +4,7 @@ class Solution(object):
        inner_count = 0
 
        for i in range(0, len(nums)):
-           if nums[n] == 1:
+           if nums[i] == 1:
                inner_count += 1
                if inner_count > count:
                    count = inner_count
