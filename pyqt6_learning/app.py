@@ -1,27 +1,51 @@
 import sys
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QPushButton,
-                             QDialog, QDialogButtonBox, QVBoxLayout,
-                             QLabel, QMessageBox)
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel,
+                               QLineEdit, QListWidget, QHBoxLayout)
 
-class MainWindow(QMainWindow):
+
+class DemoWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("My App")
+        self.setWindowTitle("Demo Window")
+        self.setGeometry(100, 100, 600, 400)
 
-        button = QPushButton("Press me for a dialog!")
-        button.clicked.connect(self.button_clicked)
-        self.setCentralWidget(button)
+        self.label = QLabel("May ban nuoc")
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-    def button_clicked(self, s):
-        dlg = QMessageBox(self)
-        dlg.setWindowTitle("I have a question!")
-        dlg.setText("This is a simple dialog")
-        button = dlg.exec()
+        self.money_enter = QLineEdit()
+        self.money_enter.setPlaceholderText("Nhap so tien...")
 
-        if button == QMessageBox.StandardButton.Ok:
-            print("Okay!")
+        self.product_list = QListWidget()
+
+        self.status_label = QLabel("Status: ")
+        self.status = QLabel("")
+        self.money_change_label = QLabel("Tien thua:")
+        self.change_status = QLabel("")
+
+        main_layout = QVBoxLayout()
+
+        status_layout = QHBoxLayout()
+        status_layout.addWidget(self.status_label)
+        status_layout.addWidget(self.status)
+
+        money_status_layout = QHBoxLayout()
+        money_status_layout.addWidget(self.money_change_label)
+        money_status_layout.addWidget(self.change_status)
+
+        main_layout.addWidget(self.label)
+        main_layout.addWidget(self.money_enter)
+        main_layout.addWidget(self.product_list)
+        main_layout.addLayout(status_layout)
+        main_layout.addLayout(money_status_layout)
+
+        container = QWidget()
+        container.setLayout(main_layout)
+
+        self.setCentralWidget(container)
+
 
 app = QApplication(sys.argv)
-window = MainWindow()
+window = DemoWindow()
 window.show()
-app.exec()
+sys.exit(app.exec())
