@@ -1,0 +1,4 @@
+QLabel#machine_label {
+    font-size: 20;
+    color: aquamarine;
+}
