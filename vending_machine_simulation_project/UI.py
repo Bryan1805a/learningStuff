@@ -1,17 +1,24 @@
-import sys
-from pathlib import Path
 from PySide6.QtGui import QIntValidator
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel,
                                QLineEdit, QListWidget, QHBoxLayout, QListWidgetItem, QTextEdit)
 
+# Import your backend
+from backend import VendingMachine
+
 
 class DemoWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        
+        # Initialize backend
+        self.vending_machine = VendingMachine()
+        
         self.setup_window()
         self.create_widgets()
         self.setup_layouts()
+        self.connect_signals()
+        self.update_display()
         
     def setup_window(self):
         """Configure main window properties"""
@@ -45,39 +52,90 @@ class DemoWindow(QMainWindow):
     def _create_product_list(self):
         """Create and populate the product list"""
         self.product_list = QListWidget()
+        self.populate_product_list()
+
+    def populate_product_list(self):
+        """Populate product list from backend data"""
+        self.product_list.clear()
+        products = self.vending_machine.get_products()
         
-        # Product data
-        products = [
-            ("Coca Cola", 25), 
-            ("Orange Juice", 15), 
-            ("Pepsi", 25),
-            ("Coffee", 12), 
-            ("Fresh Water", 8), 
-            ("Tea", 10)
-        ]
-        
-        # Add products to list
-        for name, price in products:
-            item = QListWidgetItem(f"{name} - ${price}")
-            item.setData(Qt.ItemDataRole.UserRole, {"name": name, "price": price})
+        for product in products:
+            display_text = f"{product['name']} - ${product['price']} (Stock: {product['stock']})"
+            item = QListWidgetItem(display_text)
+            item.setData(Qt.ItemDataRole.UserRole, product)
             self.product_list.addItem(item)
 
     def _create_status_panel(self):
         """Create the status display panel"""
         self.status_panel = QTextEdit()
-        self.status_panel.setText(
-            "Your amount: \n"
-            "Your choice: \n"
-            "\n"
-            "STATUS: \n"
-            "Your change: "
-        )
+        self.status_panel.setReadOnly(True)  # Make it read-only
 
     def _create_buttons(self):
         """Create action buttons and labels"""
-        self.confirm_button = QPushButton("CONFIRM")
+        self.add_money_button = QPushButton("ADD MONEY")
+        self.confirm_button = QPushButton("CONFIRM PURCHASE")
         self.cancel_button = QPushButton("CANCEL")
         self.cancel_note_label = QLabel("You will receive all money back if you press CANCEL")
+
+    def connect_signals(self):
+        """Connect UI signals to backend methods"""
+        self.add_money_button.clicked.connect(self.add_money)
+        self.confirm_button.clicked.connect(self.confirm_purchase)
+        self.cancel_button.clicked.connect(self.cancel_transaction)
+        self.product_list.itemClicked.connect(self.select_product)
+
+    def add_money(self):
+        """Handle adding money to the machine"""
+        money_text = self.money_amount_entry.text()
+        if money_text:
+            amount = int(money_text)
+            if self.vending_machine.insert_money(amount):
+                self.money_amount_entry.clear()
+                self.update_display()
+
+    def select_product(self, item):
+        """Handle product selection"""
+        product_data = item.data(Qt.ItemDataRole.UserRole)
+        self.vending_machine.select_product(product_data["name"])
+        self.update_display()
+
+    def confirm_purchase(self):
+        """Handle purchase confirmation"""
+        success, message, change = self.vending_machine.purchase()
+        
+        if success:
+            self.populate_product_list()  # Refresh stock display
+        
+        self.update_display(message, change if success else None)
+
+    def cancel_transaction(self):
+        """Handle transaction cancellation"""
+        refund = self.vending_machine.cancel_transaction()
+        message = f"Transaction cancelled. Refunded: ${refund}" if refund > 0 else "Transaction cancelled."
+        self.update_display(message)
+
+    def update_display(self, message="", change=None):
+        """Update the status display"""
+        status = self.vending_machine.get_status()
+        
+        display_text = f"Your amount: ${status['inserted_money']}\n"
+        display_text += f"Your choice: {status['selected_product'] or 'None'}\n"
+        
+        if status['selected_product']:
+            display_text += f"Price: ${status['selected_price']}\n"
+        
+        display_text += "\nSTATUS:\n"
+        
+        if message:
+            display_text += f"{message}\n"
+        else:
+            can_buy, status_msg = self.vending_machine.can_purchase()
+            display_text += f"{status_msg}\n"
+        
+        if change is not None:
+            display_text += f"Your change: ${change}"
+        
+        self.status_panel.setText(display_text)
 
     def setup_layouts(self):
         """Setup and arrange all layouts"""
@@ -118,6 +176,7 @@ class DemoWindow(QMainWindow):
         money_layout = QHBoxLayout()
         money_layout.addWidget(self.money_amount_entry_label)
         money_layout.addWidget(self.money_amount_entry)
+        money_layout.addWidget(self.add_money_button)
         
         left_layout.addLayout(money_layout)
         left_layout.addWidget(self.product_list)
@@ -142,20 +201,3 @@ class DemoWindow(QMainWindow):
         return right_layout
 
 
-def main():
-    """Main application entry point"""
-    app = QApplication(sys.argv)
-    window = DemoWindow()
-
-    # Load stylesheet if exists
-    qss_path = Path("style.qss")
-    if qss_path.exists():
-        with open(qss_path, 'r') as f:
-            app.setStyleSheet(f.read())
-
-    window.show()
-    sys.exit(app.exec())
-
-
-if __name__ == "__main__":
-    main()
