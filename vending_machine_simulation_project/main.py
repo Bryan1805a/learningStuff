@@ -4,7 +4,6 @@ from UI import DemoWindow
 from PySide6.QtWidgets import QApplication
 
 def main():
-    """Main application entry point"""
     app = QApplication(sys.argv)
     window = DemoWindow()
 

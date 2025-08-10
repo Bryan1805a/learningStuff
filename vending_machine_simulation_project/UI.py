@@ -1,6 +1,6 @@
 from PySide6.QtGui import QIntValidator
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel,
+from PySide6.QtWidgets import (QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel,
                                QLineEdit, QListWidget, QHBoxLayout, QListWidgetItem, QTextEdit)
 
 # Import your backend
@@ -21,12 +21,10 @@ class DemoWindow(QMainWindow):
         self.update_display()
         
     def setup_window(self):
-        """Configure main window properties"""
         self.setWindowTitle("Vending Machine")
         self.setGeometry(100, 100, 600, 400)
 
     def create_widgets(self):
-        """Create all UI widgets"""
         self._create_title_label()
         self._create_money_entry()
         self._create_product_list()
@@ -34,13 +32,11 @@ class DemoWindow(QMainWindow):
         self._create_buttons()
         
     def _create_title_label(self):
-        """Create the main title label"""
         self.label = QLabel("VENDING MACHINE")
         self.label.setObjectName("machine_label")
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
     def _create_money_entry(self):
-        """Create money input widgets"""
         self.money_amount_entry_label = QLabel("Enter amount:")
         self.money_amount_entry = QLineEdit()
         self.money_amount_entry.setClearButtonEnabled(True)
@@ -50,12 +46,10 @@ class DemoWindow(QMainWindow):
         self.money_amount_entry.setValidator(money_validator)
 
     def _create_product_list(self):
-        """Create and populate the product list"""
         self.product_list = QListWidget()
         self.populate_product_list()
 
     def populate_product_list(self):
-        """Populate product list from backend data"""
         self.product_list.clear()
         products = self.vending_machine.get_products()
         
@@ -66,26 +60,22 @@ class DemoWindow(QMainWindow):
             self.product_list.addItem(item)
 
     def _create_status_panel(self):
-        """Create the status display panel"""
         self.status_panel = QTextEdit()
         self.status_panel.setReadOnly(True)  # Make it read-only
 
     def _create_buttons(self):
-        """Create action buttons and labels"""
         self.add_money_button = QPushButton("ADD MONEY")
         self.confirm_button = QPushButton("CONFIRM PURCHASE")
         self.cancel_button = QPushButton("CANCEL")
         self.cancel_note_label = QLabel("You will receive all money back if you press CANCEL")
 
     def connect_signals(self):
-        """Connect UI signals to backend methods"""
         self.add_money_button.clicked.connect(self.add_money)
         self.confirm_button.clicked.connect(self.confirm_purchase)
         self.cancel_button.clicked.connect(self.cancel_transaction)
         self.product_list.itemClicked.connect(self.select_product)
 
     def add_money(self):
-        """Handle adding money to the machine"""
         money_text = self.money_amount_entry.text()
         if money_text:
             amount = int(money_text)
@@ -94,13 +84,11 @@ class DemoWindow(QMainWindow):
                 self.update_display()
 
     def select_product(self, item):
-        """Handle product selection"""
         product_data = item.data(Qt.ItemDataRole.UserRole)
         self.vending_machine.select_product(product_data["name"])
         self.update_display()
 
     def confirm_purchase(self):
-        """Handle purchase confirmation"""
         success, message, change = self.vending_machine.purchase()
         
         if success:
@@ -109,13 +97,11 @@ class DemoWindow(QMainWindow):
         self.update_display(message, change if success else None)
 
     def cancel_transaction(self):
-        """Handle transaction cancellation"""
         refund = self.vending_machine.cancel_transaction()
         message = f"Transaction cancelled. Refunded: ${refund}" if refund > 0 else "Transaction cancelled."
         self.update_display(message)
 
     def update_display(self, message="", change=None):
-        """Update the status display"""
         status = self.vending_machine.get_status()
         
         display_text = f"Your amount: ${status['inserted_money']}\n"
@@ -138,7 +124,6 @@ class DemoWindow(QMainWindow):
         self.status_panel.setText(display_text)
 
     def setup_layouts(self):
-        """Setup and arrange all layouts"""
         # Create main container
         container = QWidget()
         main_layout = QVBoxLayout()
@@ -155,7 +140,6 @@ class DemoWindow(QMainWindow):
         self.setCentralWidget(container)
 
     def _create_content_layout(self):
-        """Create the main content layout with left and right sections"""
         content_layout = QHBoxLayout()
         
         # Left side - Input and product selection
@@ -169,7 +153,6 @@ class DemoWindow(QMainWindow):
         return content_layout
 
     def _create_left_layout(self):
-        """Create left side layout (money entry + product list)"""
         left_layout = QVBoxLayout()
         
         # Money entry section
@@ -184,7 +167,6 @@ class DemoWindow(QMainWindow):
         return left_layout
 
     def _create_right_layout(self):
-        """Create right side layout (status panel + buttons)"""
         right_layout = QVBoxLayout()
         
         # Status panel

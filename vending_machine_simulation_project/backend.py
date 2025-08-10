@@ -1,5 +1,4 @@
 class VendingMachine:
-    """Backend logic for the vending machine"""
     
     def __init__(self):
         self.products = [
@@ -14,18 +13,15 @@ class VendingMachine:
         self.selected_product = None
     
     def get_products(self):
-        """Return list of available products"""
         return self.products.copy()
     
     def insert_money(self, amount):
-        """Add money to the machine"""
         if amount > 0:
             self.inserted_money += amount
             return True
         return False
     
     def select_product(self, product_name):
-        """Select a product by name"""
         for product in self.products:
             if product["name"] == product_name and product["stock"] > 0:
                 self.selected_product = product
@@ -33,7 +29,6 @@ class VendingMachine:
         return False
     
     def can_purchase(self):
-        """Check if current selection can be purchased"""
         if not self.selected_product:
             return False, "No product selected"
         
@@ -47,7 +42,6 @@ class VendingMachine:
         return True, "Ready to purchase"
     
     def purchase(self):
-        """Complete the purchase transaction"""
         can_buy, message = self.can_purchase()
         
         if not can_buy:
@@ -69,14 +63,12 @@ class VendingMachine:
         return True, f"Purchased {purchased_item} successfully!", change
     
     def cancel_transaction(self):
-        """Cancel transaction and return all money"""
         refund = self.inserted_money
         self.inserted_money = 0
         self.selected_product = None
         return refund
     
     def get_status(self):
-        """Get current machine status"""
         return {
             "inserted_money": self.inserted_money,
             "selected_product": self.selected_product["name"] if self.selected_product else None,
