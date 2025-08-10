@@ -1,5 +1,4 @@
 class VendingMachine:
-    
     def __init__(self):
         self.products = [
             {"name": "Coca Cola", "price": 25, "stock": 10},
@@ -74,3 +73,6 @@ class VendingMachine:
             "selected_product": self.selected_product["name"] if self.selected_product else None,
             "selected_price": self.selected_product["price"] if self.selected_product else 0
         }
+    
+vending = VendingMachine()
+print(type(vending.products[0]))
