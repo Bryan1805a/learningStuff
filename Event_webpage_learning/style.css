@@ -46,12 +46,12 @@ section {
     max-width: 900px;
     background-color: #343a40;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.432);
+    box-shadow: 0 2px 10px #243328;
     transition: box-shadow 0.3s ease;
 }
 
 section:hover {
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 18px rgba(177, 255, 161, 0.15);
 }
 
 section h2 {
