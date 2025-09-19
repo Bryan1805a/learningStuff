@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form id="form">
+        <div class="form_control">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name"> <br>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email"><br>
+            <label for="age">Age</label>
+            <input type="text" name="age" id="age"> <br>
+        </div>
+
+        <div class="form_control">
+            <label for="role">Which option is best describes you?</label>
+            <select name="role" id="role">
+                <option value="student">Student</option>
+                <option value="intern">Intern</option>
+                <option value="professional">Professional</option>
+                <option value="other">Other</option>
+            </select> <br>
+        </div>
+
+        <div class="form_control">
+            <label>Would you recommend GFG to a friends?</label>
+            <label for="recommend_1">
+                <input type="radio" name="recommend_1" id="recommend">Yes
+            </label>
+            <label for="recommend_2">
+                <input type="radio" name="recommend_2" id="recommend">No
+            </label>
+            <label for="recommend_3">
+                <input type="radio" name="recommend_3" id="recommend">Maybe
+            </label> <br>
+        </div>
+
+        <div class="form_control">
+            <label>Languages and Framework known
+                <small>(Check all that apply)</small>
+            </label> <br>
+            <label for="inp_1">
+                <input type="checkbox" name="inp">C
+            </label> <br>
+            <label for="inp_2">
+                <input type="checkbox" name="inp">C++
+            </label> <br>
+            <label for="inp_3">
+                <input type="checkbox" name="inp">C#
+            </label> <br>
+        </div>
+
+        <div class="form_control">
+            <label for="comment">Any comments or suggestions</label>
+            <textarea name="comment" id="comment" placeholder="Enter your comment here"></textarea> <br>
+        </div>
+
+        <button type="submit" value="submit">Submit</button>
+    </form>
+</body>
+</html>
