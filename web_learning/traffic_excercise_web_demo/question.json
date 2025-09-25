@@ -1,0 +1,17 @@
+[
+  {
+    "text": "When driving a motorbike in Vietnam, what is the maximum allowed alcohol level in your blood?",
+    "options": ["0.25 mg/l", "0.00 mg/l", "0.5 mg/l"],
+    "answer": 1
+  },
+  {
+    "text": "What is the maximum speed limit in urban areas for cars (unless otherwise indicated)?",
+    "options": ["40 km/h", "50 km/h", "60 km/h"],
+    "answer": 2
+  },
+  {
+    "text": "Which side of the road do vehicles drive on in Vietnam?",
+    "options": ["Right", "Left", "Both sides depending on vehicle type"],
+    "answer": 0
+  }
+]
