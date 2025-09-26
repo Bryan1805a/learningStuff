@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 300px;
+}
+
+.container h1 {
+    margin-bottom: 20px;
+}
+
+.container input[type="number"] {
+    width: 50px;
+    margin-bottom: 20px;
+}
+
+.container input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.output {
+    margin: 20px 0;
+    font-size: 1.2em;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    word-wrap: break-word;
+}
+
+.btn {
+    background-color: #6a11cb;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 5px;
+}
+
+.btn:hover {
+    background-color: #2575fc;
+}
