@@ -12,13 +12,19 @@ public class learning {
         return SCANNER.nextInt();
     }
 
-    public static int[][] array_input() {
+    public static int[] row_col_input() {
         System.out.print("Input rows = ");
         int rows = int_input();
 
         System.out.print("Input columns = ");
         int columns = int_input();
 
+        return new int[]{rows, columns};
+    }
+
+    public static int[][] array_input(int[] r_c_array) {
+        int rows = r_c_array[0];
+        int columns = r_c_array[1];
         int[][] array = new int[rows][columns];
 
         System.out.println("Input elements:");
@@ -146,33 +152,101 @@ public class learning {
 
     // Bài 9. Sắp xếp các phần tử trong mảng 2 chiều tăng dần
     public static int[] flatting_array(int[][] array) {
-        // Calculate total size needed for the flattened array
-        int totalSize = 0;
+        int total_size = 0;
         for (int i = 0; i < array.length; i++) {
-            totalSize += array[i].length;
+            total_size += array[i].length;
         }
         
-        // Create the flattened array with the correct size
-        int[] flatten_array = new int[totalSize];
+        int[] flattened_array = new int[total_size];
         
-        // Copy all elements to the flattened array
         int index = 0;
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
-                flatten_array[index] = array[i][j];
+                flattened_array[index] = array[i][j];
                 index++;
             }
         }
         
-        // Sort the array in ascending order
-        Arrays.sort(flatten_array);
+        Arrays.sort(flattened_array);
         
-        return flatten_array;
+        return flattened_array;
+    }
+
+    // ----- Reshape 1D to 2D -----
+    public static int[][] reshape_array_to_2D(int rows, int cols, int[] flattened_array) {
+        // ----- Check if the shape fits the number of elements -----
+        if (rows * cols != flattened_array.length) {
+            System.out.println("The shape doesn't fit the number of elements");
+            return new int[0][0]; // Return empty 2D array in case of error
+        }
+
+        int[][] reshaped_array = new int[rows][cols];
+        int flattened_array_index = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                reshaped_array[i][j] = flattened_array[flattened_array_index];
+                flattened_array_index++;
+            }
+        }
+
+        return reshaped_array;
+    }
+
+    // Bài 10. Tìm dòng có tổng lớn nhất
+    public static void find_largest_sum(int[][] array) {
+        int sum = 0;
+        int index = 0;
+
+        for (int i = 0; i < array.length; i++) {
+            int temp = 0;
+            for (int j = 0; j < array[i].length; j++) {
+                temp += array[i][j];
+            }
+
+            if (temp > sum) {
+                sum = temp;
+                index = i;
+            }
+        }
+
+        System.out.println("Largest sum in row " + index + ": " + sum);
+        System.out.println();
+    }
+
+    // Bài 11 In chéo chính , tinh tổng
+    public static void sum_of_main_diagonal(int[][] array) {
+        // Check if matrix is square
+        if (array.length != array[0].length) {
+            System.out.println("Matrix must be square to find main diagonal");
+            return;
+        }
+
+        int sum = 0;
+        System.out.println("Main diagonal elements:");
+        
+        // Print the matrix with main diagonal highlighted
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[i].length; j++) {
+                if (i == j) {
+                    System.out.print("[" + array[i][j] + "] ");
+                    sum += array[i][j];
+                } 
+                else {
+                    System.out.print(array[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+
+        System.out.println("\nSum of main diagonal = " + sum);
+        System.out.println();
     }
 
     public static void main(String[] args) {
+        int[] row_col_array = row_col_input();
+
         System.out.println("----- Bai 1 -----");
-        int[][] two_D_array = array_input();
+        int[][] two_D_array = array_input(row_col_array);
         array_output(two_D_array);
 
         System.out.println("----- Bai 2 -----");
@@ -191,7 +265,20 @@ public class learning {
         sum_of_dianogal(two_D_array);
 
         System.out.println("----- Bai 9 -----");
-        int[] a = flatting_array(two_D_array);
-        System.out.println("Sorted flattened array: " + Arrays.toString(a));
+        int[] flattened_array = flatting_array(two_D_array);
+        System.out.println("Flattened and sorted array: " + Arrays.toString(flattened_array));
+        
+        // Reshape back to original dimensions
+        int rows = two_D_array.length;
+        int cols = two_D_array[0].length;
+        int[][] reshaped_array = reshape_array_to_2D(rows, cols, flattened_array);
+        System.out.println("\nReshaped array:");
+        array_output(reshaped_array);
+
+        System.out.println("----- Bai 10 -----");
+        find_largest_sum(two_D_array);
+
+        System.out.println("----- Bai 11 -----");
+        sum_of_main_diagonal(two_D_array);
     }
 }
